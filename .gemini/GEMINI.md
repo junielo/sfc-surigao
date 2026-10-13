@@ -64,7 +64,7 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - Tone: warm, simple, faith-filled, youthful. Not corporate or busy.
 - Phase 1 is a static site. Phase 2 (later) adds events calendar, blog, registration, dynamic gallery, admin updates. Keep content in typed files so Phase 2 can swap in an API or CMS.
 - Current scope: the Home page only. Build only what exists in the Figma design. Do not add sections, pages, or features that are not in it.
-- Navigation: Home, About, Gallery, Contact. The footer stays empty for now. English only.
+- Navigation: Home, About, Activities, Gallery, Contact. The footer stays empty for now. English only.
 - Never invent facts about the organization (fees, requirements, schedules, contact details). Use placeholders and mark them clearly.
 
 ## Project Structure
@@ -72,7 +72,6 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - `src/app/components/`: `navbar`, `footer` (footer is an empty placeholder for now).
 - `src/app/pages/`: `home`, `about`, `activities`, `gallery`, `contact`. Only `home` is being built. The others are empty placeholders: do not add content to them unless asked.
 - `src/app/pages/home/` holds the Home sections as separate small components: `hero`, `intro`, `what-we-do`, `clp-photo-wall`, `events-carousel`. The `home` page only assembles them.
-- The `activities` page exists but is not in the nav (nav is Home, About, Gallery, Contact).
 - Routes live in `app.routes.ts` and are lazy-loaded.
 - Content goes in typed TS or JSON files (for example in `src/app/data/`), not in templates.
 - Do not create new pages or components that are not listed here without asking first.
@@ -80,7 +79,7 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 
 ## Styling (Tailwind CSS v4)
 
-- Tailwind v4 is installed through `@tailwindcss/postcss` and `.postcssrc.json`. The global stylesheet is `src/styles.scss` and starts with `@use "tailwindcss";`. Keep the `@theme` tokens in that file. Put styles for one component in that component's own stylesheet, not the global file.
+- Tailwind v4 is installed through `@tailwindcss/postcss` and `.postcssrc.json`. The global stylesheet is `src/styles.css` and starts with `@import "tailwindcss";`. Keep the `@theme` tokens in that file. Put styles for one component in that component's own stylesheet, not the global file.
 - Do NOT create `tailwind.config.js`. Do NOT install or configure `autoprefixer`. Do NOT use the v3 directives `@tailwind base/components/utilities`.
 - Put design tokens in an `@theme` block in the global stylesheet. Brand colors: navy `#162045`, steel blue `#5F87A6`, beige `#E6D8C9`. Use steel blue only for icons, borders, dividers, and large headings, never for small text.
 - Avoid `@apply` in component stylesheets (Tailwind v4 needs `@reference` there). Prefer utility classes in templates or plain CSS.

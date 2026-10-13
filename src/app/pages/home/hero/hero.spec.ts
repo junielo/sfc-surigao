@@ -18,4 +18,11 @@ describe('Hero', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should render hero image', () => {
+    const compiled = fixture.nativeElement as HTMLElement;
+    const img = compiled.querySelector('img');
+    expect(img).toBeTruthy();
+    expect(img?.getAttribute('src')).toBe('/images/home/img_hero.png');
+  });
 });

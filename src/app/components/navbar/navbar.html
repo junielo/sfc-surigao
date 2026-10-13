@@ -1,1 +1,83 @@
-<p>navbar works!</p>
+<nav aria-label="Main" class="fixed top-0 left-0 right-0 w-full px-4 md:px-8 py-3.5 flex items-center justify-between z-50">
+
+  <!-- Desktop Links & Separators -->
+  <div class="hidden md:flex items-center justify-center flex-1 px-8">
+    <ul class="flex items-center justify-center gap-4 m-0 p-0 list-none">
+      <li class="flex items-center justify-center">
+        <div class="flex items-center justify-center">
+          <img src="/images/icons/sfc_transparent.png" alt="" class="w-8 h-8 object-contain nav-icon translate-y-[-5px]" />
+        </div>
+      </li>
+      @for (link of navLinks; track link.path; let last = $last) {
+        <li class="flex items-center">
+          <a
+            [routerLink]="link.path"
+            [routerLinkActive]="['active']"
+            [routerLinkActiveOptions]="link.path === '/' ? { exact: true } : { exact: false }"
+            (click)="closeMobileMenu()"
+            class="nav-link font-[family-name:var(--font-nav)] text-[18px] text-[var(--color-primary)] no-underline px-1 py-0.5 relative focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tertiary)] rounded"
+          >
+            {{ link.label }}
+          </a>
+        </li>
+        @if (!last) {
+          <li aria-hidden="true" class="flex items-center justify-center">
+            <div class="w-1 h-1 rotate-45 bg-[var(--color-tertiary)] translate-y-[-5px]"></div>
+          </li>
+        }
+      }
+    </ul>
+  </div>
+
+  <!-- Mobile Hamburger Button -->
+  <button
+    type="button"
+    class="md:hidden flex flex-col justify-center items-center w-11 h-11 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tertiary)]"
+    [attr.aria-expanded]="mobileMenuOpen()"
+    aria-label="Toggle navigation menu"
+    (click)="toggleMobileMenu()"
+  >
+    <span
+      class="w-6 h-0.5 bg-[var(--color-primary)] transition-transform duration-300 transform"
+      [class.rotate-45]="mobileMenuOpen()"
+      [class.translate-y-2]="mobileMenuOpen()"
+    ></span>
+    <span
+      class="w-6 h-0.5 bg-[var(--color-primary)] my-1.5 transition-opacity duration-300"
+      [class.opacity-0]="mobileMenuOpen()"
+    ></span>
+    <span
+      class="w-6 h-0.5 bg-[var(--color-primary)] transition-transform duration-300 transform"
+      [class.-rotate-45]="mobileMenuOpen()"
+      [class.-translate-y-2]="mobileMenuOpen()"
+    ></span>
+  </button>
+
+  <!-- Mobile Dropdown Panel -->
+  @if (mobileMenuOpen()) {
+    <div
+      class="absolute top-full left-0 w-full md:hidden flex flex-col py-6 px-6 animate-enter"
+    >
+      <ul class="flex flex-col gap-2 m-0 p-0 list-none">
+        <li class="flex items-center py-1.5 px-1.5">
+          <div class="flex items-center">
+            <img src="/images/icons/sfc_transparent.png" alt="" class="w-7 h-7 object-contain nav-icon translate-y-[-3px]" />
+          </div>
+        </li>
+        @for (link of navLinks; track link.path) {
+          <li>
+            <a
+              [routerLink]="link.path"
+              [routerLinkActive]="['active']"
+              [routerLinkActiveOptions]="link.path === '/' ? { exact: true } : { exact: false }"
+              (click)="closeMobileMenu()"
+              class="nav-link font-[family-name:var(--font-nav)] text-[12px] text-[var(--color-primary)] no-underline block py-1.5 px-1.5 min-h-[44px] flex items-center rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-tertiary)]"
+            >
+              {{ link.label }}
+            </a>
+          </li>
+        }
+      </ul>
+    </div>
+  }
+</nav>

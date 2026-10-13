@@ -1,11 +1,24 @@
 @import "tailwindcss";
 
 @layer theme {
-  :root {
+  :root, :host {
     --color-primary: #162045;
     --color-secondary: #0F2A45;
     --color-tertiary: #5F87A6;
     --color-accent: #E6D8C9;
     --color-background: #FDF4E5;
+    --font-nav: "Cagliostro", serif;
   }
+}
+
+body {
+  background-color: var(--color-background);
+}
+
+@font-face {
+  font-family: "Cagliostro";
+  src: url("/fonts/Cagliostro-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
