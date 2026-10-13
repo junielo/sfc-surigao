@@ -1,7 +1,12 @@
 <section class="relative w-full overflow-hidden">
   <img
-    src="/images/home/img_hero.png"
+    [src]="heroSrc"
     alt="SFC Surigao Hero"
     class="w-full h-auto object-cover block"
   />
+  <div class="relative h-32 overflow-hidden pointer-events-none" aria-hidden="true"
+       style="mask-image: linear-gradient(to bottom, #000 0%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, #000 0%, transparent 100%);">
+    <img [src]="heroSrc" alt=""
+         class="block w-full scale-y-[-1] scale-x-105 blur-[24px]" />
+  </div>
 </section>

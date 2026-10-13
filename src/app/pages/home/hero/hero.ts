@@ -6,4 +6,6 @@ import { Component } from '@angular/core';
   styleUrl: './hero.scss',
   templateUrl: './hero.html',
 })
-export class Hero {}
+export class Hero {
+  heroSrc = '/images/home/img_hero.png';
+}
