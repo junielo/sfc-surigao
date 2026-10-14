@@ -108,6 +108,10 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 
 - Use prerendering (SSG) or SSR. Set a unique title and meta description per page, plus Open Graph tags for Facebook link previews.
 
+## Figma Integration
+
+- For any Figma-driven implementation task, read `.gemini/FIGMA_RULES.md` before starting.
+
 ## How to Work With Me
 
 - Do one component or one task per request. Do not rewrite unrelated files.

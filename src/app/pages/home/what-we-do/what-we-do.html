@@ -1,7 +1,20 @@
 <section class="what-we-do">
-  @for (tile of tiles; track tile.src) {
-    <figure class="tile" [style.--tint]="tile.tint" [style.--tint-opacity]="tile.opacity">
-      <img [src]="tile.src" [alt]="tile.alt" />
-    </figure>
+  @for (tile of tiles; track tile.title) {
+    <article class="tile" [style.--tint]="tile.tint" [style.--tint-opacity]="tile.opacity" [style.--shadow-color]="tile.shadowColor">
+      <div class="tile-bg">
+        <img [src]="tile.src" [alt]="tile.title" />
+      </div>
+      <div class="tile-content">
+        <div class="icon-wrapper">
+          <img [src]="tile.icon" [alt]="tile.title + ' Icon'" />
+        </div>
+        <h3 class="tile-title">{{ tile.title }}</h3>
+        <div class="divider"></div>
+        <p class="tile-description">{{ tile.description }}</p>
+      </div>
+    </article>
   }
+  <div class="center-logo">
+    <img src="/images/icons/sfc_transparent.png" alt="SFC Logo" />
+  </div>
 </section>
