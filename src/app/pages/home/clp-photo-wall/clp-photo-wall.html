@@ -1,1 +1,12 @@
-<p>clp-photo-wall works!</p>
+<section class="marquee-container">
+  <div class="marquee-track">
+    @for (photo of marqueePhotos; track $index) {
+      <img
+        [src]="photo"
+        [alt]="$index < halfLength ? 'SFC Gallery Photo' : ''"
+        [attr.aria-hidden]="$index >= halfLength ? 'true' : null"
+        class="marquee-item"
+      />
+    }
+  </div>
+</section>

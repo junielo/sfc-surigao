@@ -1,0 +1,52 @@
+.marquee-container {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+  display: flex;
+  background-color: var(--color-background);
+  padding: 2.5rem 0;
+
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: scroll 35s linear infinite;
+    will-change: transform;
+
+    &:hover {
+      animation-play-state: paused;
+    }
+  }
+
+  .marquee-item {
+    flex: 0 0 auto;
+    width: 7vw;
+    height: 7vw;
+    object-fit: cover;
+    border-radius: 1.5rem;
+    box-shadow: 0 6px 16px rgba(22, 32, 69, 0.12);
+    transition: transform 0.3s ease;
+
+    // Spacing is a margin on EVERY item (not `gap`), so both halves of the
+    // track are exactly equal in width and -50% lands on a perfect loop point.
+    margin-right: 1rem;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+}
+
+@keyframes scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-container .marquee-track {
+    animation-duration: 120s;
+  }
+}
