@@ -3,11 +3,23 @@
   background-position: bottom center;
   background-size: 0 12px;
   padding-bottom: 8px;
-  transition: background-size 0.3s ease-in-out;
+  transition: background-size 0.3s ease-in-out, text-shadow 0.3s ease-in-out;
+  
+  /* Clean white neon glow effect */
+  color: var(--color-primary);
+  text-shadow: 
+    0 0 4px #fff,   /* Tight inner core */
+    0 0 4px #fff,   /* Tight inner core */
+    0 0 4px #fff,   /* Tight inner core */
+    0 0 10px #fff,  /* Secondary crisp layer */
+    0 0 10px #fff,  /* Secondary crisp layer */
+    0 0 10px #fff,  /* Secondary crisp layer */
+    0 0 20px rgba(255, 255, 255, 0.8), /* Soft bloom */
+    0 0 40px rgba(255, 255, 255, 0.4); /* Wide ambient glow */
 }
 
 .nav-icon {
-  filter: brightness(0) saturate(100%) invert(13%) sepia(48%) saturate(1532%) hue-rotate(204deg) brightness(93%) contrast(97%);
+  filter: brightness(0) saturate(100%) invert(13%) sepia(48%) saturate(1532%) hue-rotate(204deg) brightness(93%) contrast(97%) drop-shadow(0 0 1px #fff) drop-shadow(0 0 1px #fff);
 }
 
 .nav-link.active {
@@ -36,5 +48,82 @@
   button span {
     animation: none !important;
     transition: none !important;
+  }
+}
+
+/* Glass background layer: thick, refractive glass.
+   Base (all browsers): frosted blur + layered bevel highlights for thickness. */
+.nav-bg {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.55) 0%,
+    rgba(255, 250, 242, 0.35) 55%,
+    rgba(255, 250, 242, 0.5) 100%
+  );
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.85);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),          /* top rim light */
+    inset 0 -1px 0 rgba(255, 255, 255, 0.6),          /* bottom rim */
+    inset 0 -8px 14px -8px rgba(255, 255, 255, 0.7),  /* bottom bevel: glass edge catching light */
+    inset 0 14px 20px -14px rgba(22, 32, 69, 0.08),   /* inner depth under the top edge */
+    0 6px 20px rgba(22, 32, 69, 0.1),                 /* soft cast shadow */
+    0 1px 3px rgba(22, 32, 69, 0.08);
+  opacity: 0;
+}
+
+/* Chromium only (Chrome, Edge, Android Chrome): an SVG displacement map bends the backdrop
+   along the edges of the bar (fisheye / convex-glass bevel) while the center stays undistorted.
+   Safari and Firefox keep the base look above. Blur is kept so it stays frosted. */
+@supports (not (-webkit-hyphens: none)) and (not (-moz-appearance: none)) {
+  .nav-bg {
+    -webkit-backdrop-filter: blur(3px) url(#glass-edge-sm) saturate(180%);
+    backdrop-filter: blur(3px) url(#glass-edge-sm) saturate(180%);
+  }
+
+  @media (min-width: 768px) {
+    .nav-bg {
+      -webkit-backdrop-filter: blur(3px) url(#glass-edge-md) saturate(180%);
+      backdrop-filter: blur(3px) url(#glass-edge-md) saturate(180%);
+    }
+  }
+}
+
+/* Diagonal sheen across the glass surface */
+.nav-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.35) 18%,
+    transparent 32%,
+    transparent 68%,
+    rgba(255, 255, 255, 0.2) 82%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+@keyframes navBgReveal {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Scroll-driven: 0% opacity at 0px scroll, 100% at 150px */
+@supports (animation-timeline: scroll()) {
+  .nav-bg {
+    animation: navBgReveal linear both;
+    animation-timeline: scroll(root block);
+    animation-range: 0 150px;
+  }
+}
+
+/* Browsers without scroll-driven animations: always show the glass bar */
+@supports not (animation-timeline: scroll()) {
+  .nav-bg {
+    opacity: 1;
   }
 }

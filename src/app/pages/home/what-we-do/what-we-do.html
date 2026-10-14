@@ -1,1 +1,7 @@
-<p>what-we-do works!</p>
+<section class="what-we-do">
+  @for (tile of tiles; track tile.src) {
+    <figure class="tile" [style.--tint]="tile.tint" [style.--tint-opacity]="tile.opacity">
+      <img [src]="tile.src" [alt]="tile.alt" />
+    </figure>
+  }
+</section>

@@ -1,5 +1,45 @@
 <nav aria-label="Main" class="fixed top-0 left-0 right-0 w-full px-4 md:px-8 py-3.5 flex items-center justify-between z-50">
 
+  <!-- Glass background: fades in from 0 to 100% between 0 and 150px of scroll (see navbar.scss) -->
+  <div class="nav-bg pointer-events-none absolute inset-0 -z-10" aria-hidden="true"></div>
+
+  <!-- Edge-refraction filters used by .nav-bg (Chromium only, see navbar.scss).
+       Center of the bar is untouched; only bands along the edges bend the backdrop.
+       "sm" = phones (wider side bands), "md" = tablet/desktop. Zero-size and decorative.
+       scale values are in PIXELS (maximum bend; the actual shift is up to half of it).
+       First pass = sideways bend, second pass = up/down bend. Do NOT switch these back to
+       objectBoundingBox units: Chromium then sizes the bend from the bar's width, which pushes the
+       top/bottom edge samples out of bounds and leaves an undistorted strip at each edge.
+       Raise the numbers for a stronger fisheye, lower them for a subtler one. -->
+  <svg width="0" height="0" class="absolute" aria-hidden="true" focusable="false">
+    <filter id="glass-edge-sm" x="0" y="0" width="1" height="1" color-interpolation-filters="sRGB">
+      <feImage preserveAspectRatio="none" result="map"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='l' x1='0' x2='1' y1='0' y2='0'%3E%3Cstop offset='0' stop-color='%23ff8080' stop-opacity='1'/%3E%3Cstop offset='0.35' stop-color='%23ff8080' stop-opacity='0.4'/%3E%3Cstop offset='0.7' stop-color='%23ff8080' stop-opacity='0.1'/%3E%3Cstop offset='1' stop-color='%23ff8080' stop-opacity='0'/%3E%3C/linearGradient%3E%3ClinearGradient id='r' x1='1' x2='0' y1='0' y2='0'%3E%3Cstop offset='0' stop-color='%23008080' stop-opacity='1'/%3E%3Cstop offset='0.35' stop-color='%23008080' stop-opacity='0.4'/%3E%3Cstop offset='0.7' stop-color='%23008080' stop-opacity='0.1'/%3E%3Cstop offset='1' stop-color='%23008080' stop-opacity='0'/%3E%3C/linearGradient%3E%3ClinearGradient id='t' x1='0' x2='0' y1='0' y2='1'%3E%3Cstop offset='0' stop-color='%2380ff80' stop-opacity='1'/%3E%3Cstop offset='0.35' stop-color='%2380ff80' stop-opacity='0.4'/%3E%3Cstop offset='0.7' stop-color='%2380ff80' stop-opacity='0.1'/%3E%3Cstop offset='1' stop-color='%2380ff80' stop-opacity='0'/%3E%3C/linearGradient%3E%3ClinearGradient id='b' x1='0' x2='0' y1='1' y2='0'%3E%3Cstop offset='0' stop-color='%23800080' stop-opacity='1'/%3E%3Cstop offset='0.35' stop-color='%23800080' stop-opacity='0.4'/%3E%3Cstop offset='0.7' stop-color='%23800080' stop-opacity='0.1'/%3E%3Cstop offset='1' stop-color='%23800080' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' fill='%23808080'/%3E%3Crect x='0' y='0' width='10' height='100' fill='url(%23l)'/%3E%3Crect x='90' y='0' width='10' height='100' fill='url(%23r)'/%3E%3Crect x='0' y='0' width='100' height='22' fill='url(%23t)'/%3E%3Crect x='0' y='68' width='100' height='32' fill='url(%23b)'/%3E%3C/svg%3E" />
+      <feDisplacementMap in="SourceGraphic" in2="map" scale="96" xChannelSelector="R" yChannelSelector="B" result="shiftX" />
+      <feDisplacementMap in="shiftX" in2="map" scale="32" xChannelSelector="B" yChannelSelector="G" result="shiftY" />
+      <!-- Fallback layer: wherever the displacement output is transparent (near the top/bottom edges),
+           a backdrop-filter would reveal the raw, unblurred backdrop. Merging over SourceGraphic
+           (the already-blurred backdrop) keeps the glass covering the full height of the bar. -->
+      <feMerge>
+        <feMergeNode in="SourceGraphic" />
+        <feMergeNode in="shiftY" />
+      </feMerge>
+    </filter>
+    <filter id="glass-edge-md" x="0" y="0" width="1" height="1" color-interpolation-filters="sRGB">
+      <feImage preserveAspectRatio="none" result="map"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='l' x1='0' x2='1' y1='0' y2='0'%3E%3Cstop offset='0' stop-color='%23ff8080' stop-opacity='1'/%3E%3Cstop offset='0.35' stop-color='%23ff8080' stop-opacity='0.4'/%3E%3Cstop offset='0.7' stop-color='%23ff8080' stop-opacity='0.1'/%3E%3Cstop offset='1' stop-color='%23ff8080' stop-opacity='0'/%3E%3C/linearGradient%3E%3ClinearGradient id='r' x1='1' x2='0' y1='0' y2='0'%3E%3Cstop offset='0' stop-color='%23008080' stop-opacity='1'/%3E%3Cstop offset='0.35' stop-color='%23008080' stop-opacity='0.4'/%3E%3Cstop offset='0.7' stop-color='%23008080' stop-opacity='0.1'/%3E%3Cstop offset='1' stop-color='%23008080' stop-opacity='0'/%3E%3C/linearGradient%3E%3ClinearGradient id='t' x1='0' x2='0' y1='0' y2='1'%3E%3Cstop offset='0' stop-color='%2380ff80' stop-opacity='1'/%3E%3Cstop offset='0.35' stop-color='%2380ff80' stop-opacity='0.4'/%3E%3Cstop offset='0.7' stop-color='%2380ff80' stop-opacity='0.1'/%3E%3Cstop offset='1' stop-color='%2380ff80' stop-opacity='0'/%3E%3C/linearGradient%3E%3ClinearGradient id='b' x1='0' x2='0' y1='1' y2='0'%3E%3Cstop offset='0' stop-color='%23800080' stop-opacity='1'/%3E%3Cstop offset='0.35' stop-color='%23800080' stop-opacity='0.4'/%3E%3Cstop offset='0.7' stop-color='%23800080' stop-opacity='0.1'/%3E%3Cstop offset='1' stop-color='%23800080' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' fill='%23808080'/%3E%3Crect x='0' y='0' width='3.5' height='100' fill='url(%23l)'/%3E%3Crect x='96.5' y='0' width='3.5' height='100' fill='url(%23r)'/%3E%3Crect x='0' y='0' width='100' height='22' fill='url(%23t)'/%3E%3Crect x='0' y='68' width='100' height='32' fill='url(%23b)'/%3E%3C/svg%3E" />
+      <feDisplacementMap in="SourceGraphic" in2="map" scale="68" xChannelSelector="R" yChannelSelector="B" result="shiftX" />
+      <feDisplacementMap in="shiftX" in2="map" scale="32" xChannelSelector="B" yChannelSelector="G" result="shiftY" />
+      <!-- Fallback layer: wherever the displacement output is transparent (near the top/bottom edges),
+           a backdrop-filter would reveal the raw, unblurred backdrop. Merging over SourceGraphic
+           (the already-blurred backdrop) keeps the glass covering the full height of the bar. -->
+      <feMerge>
+        <feMergeNode in="SourceGraphic" />
+        <feMergeNode in="shiftY" />
+      </feMerge>
+    </filter>
+  </svg>
+
   <!-- Desktop Links & Separators -->
   <div class="hidden md:flex items-center justify-center flex-1 px-8">
     <ul class="flex items-center justify-center gap-4 m-0 p-0 list-none">
