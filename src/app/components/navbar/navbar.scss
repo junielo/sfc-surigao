@@ -4,22 +4,23 @@
   background-size: 0 12px;
   padding-bottom: 8px;
   transition: background-size 0.3s ease-in-out, text-shadow 0.3s ease-in-out;
+  font-weight: 700;
   
-  /* Clean white neon glow effect */
+  /* Warm cream glow effect */
   color: var(--color-primary);
   text-shadow: 
-    0 0 4px #fff,   /* Tight inner core */
-    0 0 4px #fff,   /* Tight inner core */
-    0 0 4px #fff,   /* Tight inner core */
-    0 0 10px #fff,  /* Secondary crisp layer */
-    0 0 10px #fff,  /* Secondary crisp layer */
-    0 0 10px #fff,  /* Secondary crisp layer */
-    0 0 20px rgba(255, 255, 255, 0.8), /* Soft bloom */
-    0 0 40px rgba(255, 255, 255, 0.4); /* Wide ambient glow */
+    0 0 4px #FAF3E6,   /* Tight inner core */
+    0 0 4px #FAF3E6,   /* Tight inner core */
+    0 0 4px #FAF3E6,   /* Tight inner core */
+    0 0 10px #FAF3E6,  /* Secondary crisp layer */
+    0 0 10px #FAF3E6,  /* Secondary crisp layer */
+    0 0 10px #FAF3E6,  /* Secondary crisp layer */
+    0 0 20px rgba(250, 243, 230, 0.8), /* Soft bloom */
+    0 0 40px rgba(250, 243, 230, 0.4); /* Wide ambient glow */
 }
 
 .nav-icon {
-  filter: brightness(0) saturate(100%) invert(13%) sepia(48%) saturate(1532%) hue-rotate(204deg) brightness(93%) contrast(97%) drop-shadow(0 0 1px #fff) drop-shadow(0 0 1px #fff);
+  filter: brightness(0) saturate(100%) invert(13%) sepia(48%) saturate(1532%) hue-rotate(204deg) brightness(93%) contrast(97%) drop-shadow(0 0 1px #FAF3E6) drop-shadow(0 0 1px #FAF3E6);
 }
 
 .nav-link.active {
@@ -56,17 +57,17 @@
 .nav-bg {
   background: linear-gradient(
     180deg,
-    rgba(255, 255, 255, 0.55) 0%,
-    rgba(255, 250, 242, 0.35) 55%,
-    rgba(255, 250, 242, 0.5) 100%
+    rgba(250, 243, 230, 0.35) 0%,
+    rgba(250, 243, 230, 0.2) 55%,
+    rgba(250, 243, 230, 0.3) 100%
   );
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   backdrop-filter: blur(20px) saturate(180%);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.85);
+  border-bottom: 1px solid rgba(250, 243, 230, 0.4);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.95),          /* top rim light */
-    inset 0 -1px 0 rgba(255, 255, 255, 0.6),          /* bottom rim */
-    inset 0 -8px 14px -8px rgba(255, 255, 255, 0.7),  /* bottom bevel: glass edge catching light */
+    inset 0 1px 0 rgba(250, 243, 230, 0.5),          /* top rim light */
+    inset 0 -1px 0 rgba(250, 243, 230, 0.2),          /* bottom rim */
+    inset 0 -8px 14px -8px rgba(250, 243, 230, 0.3),  /* bottom bevel: glass edge catching light */
     inset 0 14px 20px -14px rgba(22, 32, 69, 0.08),   /* inner depth under the top edge */
     0 6px 20px rgba(22, 32, 69, 0.1),                 /* soft cast shadow */
     0 1px 3px rgba(22, 32, 69, 0.08);
@@ -98,10 +99,10 @@
   background: linear-gradient(
     115deg,
     transparent 0%,
-    rgba(255, 255, 255, 0.35) 18%,
+    rgba(250, 243, 230, 0.2) 18%,
     transparent 32%,
     transparent 68%,
-    rgba(255, 255, 255, 0.2) 82%,
+    rgba(250, 243, 230, 0.1) 82%,
     transparent 100%
   );
   pointer-events: none;

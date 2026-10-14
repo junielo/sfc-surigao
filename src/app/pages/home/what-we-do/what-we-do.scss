@@ -16,8 +16,8 @@
     height: 100%;
     display: block;
     object-fit: cover;      // zooms/crops so there are no white gaps
-    filter: blur(2px);      // slight blur
-    transform: scale(1.05); // avoids soft, light edges caused by blur
+    filter: blur(6px);     // increased blur
+    transform: scale(1.1);  // avoids soft, light edges caused by blur
   }
 
   // color tint
