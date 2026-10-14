@@ -1,16 +1,42 @@
-<section class="marquee-container">
-  @for (row of rows; track $index) {
-    <div class="marquee-row">
-      <div class="marquee-track" [class.marquee-track--right]="row.direction === 'right'">
-        @for (photo of row.photos; track $index) {
-          <img
-            [src]="photo"
-            [alt]="$index < row.halfLength ? 'SFC Gallery Photo' : ''"
-            [attr.aria-hidden]="$index >= row.halfLength ? 'true' : null"
-            class="marquee-item"
-          />
-        }
+<section class="photo-wall">
+  <div class="marquee-container">
+    @for (row of rows; track $index) {
+      <div class="marquee-row">
+        <div class="marquee-track" [class.marquee-track--right]="row.direction === 'right'">
+          @for (photo of row.photos; track $index) {
+            <img
+              [src]="photo"
+              [alt]="$index < row.halfLength ? 'SFC Gallery Photo' : ''"
+              [attr.aria-hidden]="$index >= row.halfLength ? 'true' : null"
+              class="marquee-item"
+            />
+          }
+        </div>
       </div>
+    }
+  </div>
+
+  <div class="cloud">
+    <!-- Layer 1: back cloud -->
+    <div class="cloud-layer cloud-layer--back">
+      <img src="/images/home/photo-wall/cloud/cloud_back.svg" alt="" />
     </div>
-  }
+
+    <!-- Layer 2: front cloud (flipped vertically, as in the Figma design) -->
+    <div class="cloud-layer cloud-layer--front">
+      <img src="/images/home/photo-wall/cloud/cloud_front.svg" alt="" />
+    </div>
+
+    <div class="cloud-content">
+      <h2 class="cloud-title">Start your journey with Christ</h2>
+      <p class="cloud-text">
+        Talks, sharing, worship, and fellowship, all in a welcoming community.
+      </p>
+      <a class="cloud-link" href="#">
+        <img src="/SVG/arrow_right.svg" alt="" class="cloud-arrow" aria-hidden="true" />
+        Join the Next CLP
+        <img src="/SVG/arrow_outward.svg" alt="" class="cloud-arrow" aria-hidden="true" />
+      </a>
+    </div>
+  </div>
 </section>
