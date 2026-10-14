@@ -1,19 +1,45 @@
 .marquee-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem; // vertical space between the rows
   overflow: hidden;
   width: 100%;
   position: relative;
-  display: flex;
   background-color: var(--color-background);
   padding: 2.5rem 0;
+
+  // Soft fade on both sides. A mask makes the images themselves become
+  // transparent, so it works on any background (no color matching needed).
+  // Widen/narrow the fade by changing the 15% / 85% stops.
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    #000 15%,
+    #000 85%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    #000 15%,
+    #000 85%,
+    transparent 100%
+  );
+
+  .marquee-row {
+    width: 100%;
+    overflow: hidden;
+  }
 
   .marquee-track {
     display: flex;
     width: max-content;
-    animation: scroll 35s linear infinite;
+    animation: scroll-left 120s linear infinite;
     will-change: transform;
 
-    &:hover {
-      animation-play-state: paused;
+    // Right-moving rows: same loop, played backwards.
+    &.marquee-track--right {
+      animation-name: scroll-right;
     }
   }
 
@@ -24,19 +50,16 @@
     object-fit: cover;
     border-radius: 1.5rem;
     box-shadow: 0 6px 16px rgba(22, 32, 69, 0.12);
-    transition: transform 0.3s ease;
+    pointer-events: none; // purely decorative, no interaction
+    user-select: none;
 
-    // Spacing is a margin on EVERY item (not `gap`), so both halves of the
-    // track are exactly equal in width and -50% lands on a perfect loop point.
-    margin-right: 1rem;
-
-    &:hover {
-      transform: scale(1.05);
-    }
+    // Margin on EVERY item (not `gap`) keeps both halves exactly equal,
+    // so the -50% / 0% loop point is perfectly seamless.
+    margin-right: 0.8rem;
   }
 }
 
-@keyframes scroll {
+@keyframes scroll-left {
   from {
     transform: translateX(0);
   }
@@ -45,8 +68,17 @@
   }
 }
 
+@keyframes scroll-right {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .marquee-container .marquee-track {
-    animation-duration: 120s;
+    animation-duration: 240s;
   }
 }

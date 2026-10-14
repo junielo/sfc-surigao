@@ -1,12 +1,16 @@
 <section class="marquee-container">
-  <div class="marquee-track">
-    @for (photo of marqueePhotos; track $index) {
-      <img
-        [src]="photo"
-        [alt]="$index < halfLength ? 'SFC Gallery Photo' : ''"
-        [attr.aria-hidden]="$index >= halfLength ? 'true' : null"
-        class="marquee-item"
-      />
-    }
-  </div>
+  @for (row of rows; track $index) {
+    <div class="marquee-row">
+      <div class="marquee-track" [class.marquee-track--right]="row.direction === 'right'">
+        @for (photo of row.photos; track $index) {
+          <img
+            [src]="photo"
+            [alt]="$index < row.halfLength ? 'SFC Gallery Photo' : ''"
+            [attr.aria-hidden]="$index >= row.halfLength ? 'true' : null"
+            class="marquee-item"
+          />
+        }
+      </div>
+    </div>
+  }
 </section>
