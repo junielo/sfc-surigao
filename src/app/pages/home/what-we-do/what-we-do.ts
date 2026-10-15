@@ -10,9 +10,11 @@ import { isPlatformBrowser } from '@angular/common';
 export class WhatWeDo {
   logoRef = viewChild<ElementRef<HTMLElement>>('logoRef');
   clpIconRef = viewChild<ElementRef<HTMLElement>>('clpIcon');
+  assemblyIconRef = viewChild<ElementRef<HTMLElement>>('assemblyIcon');
   isAnimated = signal(false);
   isClpAnimated = signal(false);
   isHouseholdAnimated = signal(false);
+  isAssemblyAnimated = signal(false);
   platformId = inject(PLATFORM_ID);
 
   onClpAnimationEnd() {
@@ -80,6 +82,7 @@ export class WhatWeDo {
           this.isAnimated.set(true);
           this.isClpAnimated.set(true);
           this.isHouseholdAnimated.set(true);
+          this.isAssemblyAnimated.set(true);
           return;
         }
 
@@ -123,6 +126,27 @@ export class WhatWeDo {
           );
 
           clpObserver.observe(clpEl);
+        }
+
+        const assemblyEl = this.assemblyIconRef()?.nativeElement;
+        if (assemblyEl) {
+          const assemblyObserver = new IntersectionObserver(
+            (entries, obs) => {
+              entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                  this.isAssemblyAnimated.set(true);
+                  obs.unobserve(entry.target);
+                }
+              });
+            },
+            {
+              root: null,
+              rootMargin: '-30% 0px -50% 0px',
+              threshold: 0.1,
+            }
+          );
+
+          assemblyObserver.observe(assemblyEl);
         }
       });
     }

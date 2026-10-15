@@ -10,6 +10,8 @@
             <img #clpIcon [src]="tile.icon" [alt]="tile.title + ' Icon'" [class.swing-in-left-bck]="isClpAnimated()" (animationend)="onClpAnimationEnd()" />
           } @else if (tile.icon.includes('household_tile.png')) {
             <img [src]="tile.icon" [alt]="tile.title + ' Icon'" [class.swing-in-left-bck]="isHouseholdAnimated()" />
+          } @else if (tile.icon.includes('assembly_tile.png')) {
+            <img #assemblyIcon [src]="tile.icon" [alt]="tile.title + ' Icon'" [class.swing-in-left-bck]="isAssemblyAnimated()" />
           } @else {
             <img [src]="tile.icon" [alt]="tile.title + ' Icon'" />
           }

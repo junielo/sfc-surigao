@@ -97,7 +97,8 @@
         object-fit: contain;
 
         &[src*="clp_tile.png"]:not(.swing-in-left-bck),
-        &[src*="household_tile.png"]:not(.swing-in-left-bck) {
+        &[src*="household_tile.png"]:not(.swing-in-left-bck),
+        &[src*="assembly_tile.png"]:not(.swing-in-left-bck) {
           opacity: 0;
         }
 
@@ -192,7 +193,8 @@
 @media (prefers-reduced-motion: reduce) {
   .center-logo img,
   .icon-wrapper img[src*="clp_tile.png"],
-  .icon-wrapper img[src*="household_tile.png"] {
+  .icon-wrapper img[src*="household_tile.png"],
+  .icon-wrapper img[src*="assembly_tile.png"] {
     opacity: 1 !important;
     animation: none !important;
   }
