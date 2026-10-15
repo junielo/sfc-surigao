@@ -1,0 +1,1 @@
+import{F as pc,b as bD,v as aI,w as fc}from"./main-JTVLF5XZ.js";var c=class e{static ɵfac=function(t){return new(t||e)};static ɵcmp=aI({type:e,selectors:[[`app-activities`]],decls:2,vars:0,template:function(t,p){t&1&&(fc(0,`p`),bD(1,`activities works!`),pc())},encapsulation:2})};export{c as Activities};
