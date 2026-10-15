@@ -1,0 +1,1 @@
+import{F as pc,b as bD,v as aI,w as fc}from"./main-6WAQ2CMA.js";var o=class a{static ɵfac=function(e){return new(e||a)};static ɵcmp=aI({type:a,selectors:[[`app-gallery`]],decls:2,vars:0,template:function(e,i){e&1&&(fc(0,`p`),bD(1,`gallery works!`),pc())},encapsulation:2})};export{o as Gallery};

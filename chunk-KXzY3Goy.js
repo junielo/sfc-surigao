@@ -1,1 +1,0 @@
-import{F as pc,b as bD,v as aI,w as fc}from"./main-QAKRD2I6.js";var s=class e{static ɵfac=function(t){return new(t||e)};static ɵcmp=aI({type:e,selectors:[[`app-contact`]],decls:2,vars:0,template:function(t,p){t&1&&(fc(0,`p`),bD(1,`contact works!`),pc())},encapsulation:2})};export{s as Contact};
