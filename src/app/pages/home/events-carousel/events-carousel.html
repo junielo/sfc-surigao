@@ -1,1 +1,46 @@
-<p>events-carousel works!</p>
+<section class="events-carousel" aria-roledescription="carousel" aria-label="Latest events and announcements">
+  <!-- Blurred, enlarged background of the selected activity (cross-fades) -->
+  <div class="bg" aria-hidden="true">
+    @for (item of activities(); track item.id; let i = $index) {
+      <img class="bg__img" [class.is-active]="i === activeIndex()" [src]="item.image" alt="" />
+    }
+  </div>
+  <div class="tint" aria-hidden="true"></div>
+
+  <h2 class="heading">LATEST EVENTS or ANNOUNCEMENTS</h2>
+
+  <div
+    #track
+    class="track"
+    tabindex="0"
+    (scroll)="onScroll()"
+    (wheel)="onUserScroll()"
+    (touchstart)="onUserScroll()"
+    (keydown)="onKeydown($event)"
+  >
+    @for (item of activities(); track item.id; let i = $index) {
+      <div
+        class="slide"
+        role="group"
+        [class.is-active]="i === activeIndex()"
+        [class.is-before]="i < activeIndex()"
+        [class.is-after]="i > activeIndex()"
+        [attr.aria-label]="item.title + ', ' + rangeLabel(item)"
+      >
+        <!-- Each item carries its own date range and scales with the item -->
+        <div class="date-pill">
+          <span>{{ rangeLabel(item) }}</span>
+        </div>
+        <button
+          type="button"
+          class="frame"
+          [attr.aria-label]="item.title"
+          [attr.aria-current]="i === activeIndex() ? 'true' : null"
+          (click)="goTo(i)"
+        >
+          <img [src]="item.image" [alt]="item.title" draggable="false" />
+        </button>
+      </div>
+    }
+  </div>
+</section>

@@ -1,0 +1,194 @@
+@import url('https://fonts.googleapis.com/css2?family=Cagliostro&display=swap');
+
+/*
+  The section is exactly as tall as the viewport minus the fixed navbar.
+  Everything inside is sized from the Figma frame (1915 x 1146):
+  1 design px = --u, the largest value that fits both the width and the
+  available height, so the slide frame (1595 x 838) always keeps the same
+  proportions. Spare space is split evenly (--y0 vertically, track padding
+  horizontally).
+
+  Navbar height = 60px on desktop (32px logo + 2 x 14px padding) and 72px
+  on mobile (44px hamburger + 2 x 14px padding). Override --navbar-height
+  globally if you change the navbar.
+*/
+:host {
+  --navbar-height: 60px;
+  --section-h: calc(100dvh - var(--navbar-height));
+  display: block;
+  height: var(--section-h);
+  container-type: inline-size;
+}
+
+@media (max-width: 767px) {
+  :host { --navbar-height: 72px; }
+}
+
+.events-carousel {
+  --u: min(calc(100cqw / 1915), calc(var(--section-h) / 1146));
+  --y0: calc((var(--section-h) - 1146 * var(--u)) / 2);
+  position: relative;
+  width: 100%;
+  height: var(--section-h);
+  overflow: hidden;
+  background: #162045;
+  font-family: 'Cagliostro', serif;
+}
+
+/* ---------- Background ---------- */
+.bg {
+  position: absolute;
+  inset: 0;
+
+  &__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transform: scale(1.8); // "drastically enlarged"
+    filter: blur(calc(15 * var(--u)));
+    transition: opacity 650ms ease;
+
+    &.is-active { opacity: 1; }
+  }
+}
+
+.tint {
+  position: absolute;
+  inset: 0;
+  background: rgba(22, 32, 69, 0.5);
+}
+
+/* ---------- Heading ---------- */
+.heading {
+  position: absolute;
+  top: calc(30 * var(--u) + var(--y0));
+  left: 0;
+  right: 0;
+  margin: 0;
+  text-align: center;
+  font-weight: 400;
+  font-size: calc(40 * var(--u));
+  line-height: normal;
+  color: #fff;
+  white-space: nowrap;
+}
+
+/* ---------- Slider ---------- */
+.track {
+  position: absolute;
+  z-index: 2;
+  top: calc(108 * var(--u) + var(--y0));
+  left: 0;
+  width: 100%;
+  height: calc(960 * var(--u)); // taller than the slides so the enlarged slide and its date pill are not clipped
+  display: flex;
+  align-items: center;
+  gap: calc(150 * var(--u)); // layout gap; the visible gap is ~90 after scaling (see .slide)
+  padding-inline: calc((100cqw - 1500 * var(--u)) / 2); // lets first/last slide sit centered
+  box-sizing: border-box;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+
+  &:focus-visible {
+    outline: calc(3 * var(--u)) solid #e6d8c9;
+    outline-offset: calc(-3 * var(--u));
+  }
+}
+
+.slide {
+  /*
+    Layout box is 1500 x 788. Selected = x1.08 (about 1620 x 851),
+    others = x0.8 (about 1200 x 630). Neighbours shrink toward the edge
+    nearest the selected slide, so their inner edge stays put and they
+    keep peeking in from the sides.
+  */
+  --scale-active: 1.08;
+  --scale-idle: 0.8;
+  // Shrinking around the center would pull the inner edge away from the
+  // selected slide, so we shift each neighbour by the same amount to keep that
+  // edge in place. Doing it with translate (instead of switching
+  // transform-origin) means every value is animatable, so nothing jumps.
+  --shift: calc((1 - var(--scale-idle)) * 750 * var(--u));
+  --tx: 0px;
+  --s: var(--scale-idle);
+  flex: 0 0 calc(1500 * var(--u));
+  width: calc(1500 * var(--u));
+  height: calc(788 * var(--u));
+  position: relative;
+  scroll-snap-align: center;
+  opacity: 0.5;
+  transform: translateX(var(--tx)) scale(var(--s));
+  transform-origin: center center;
+  will-change: transform, opacity;
+  transition:
+    transform 650ms cubic-bezier(0.22, 0.8, 0.26, 1),
+    opacity 650ms ease;
+
+  &.is-before { --tx: var(--shift); }
+  &.is-after { --tx: calc(-1 * var(--shift)); }
+
+  &.is-active {
+    --tx: 0px;
+    --s: var(--scale-active);
+    opacity: 1;
+    z-index: 1;
+  }
+
+  .frame {
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    background: #d9d9d9;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  &.is-active .frame { cursor: default; }
+
+  // Date range: hangs over the top edge of its own item and scales with it
+  .date-pill {
+    position: absolute;
+    z-index: 1;
+    top: calc(-25 * var(--u));
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(497 * var(--u));
+    height: calc(86 * var(--u));
+    display: flex;
+    justify-content: center;
+    padding-top: calc(27 * var(--u));
+    box-sizing: border-box;
+    background: #e6d8c9;
+    border-radius: 0 0 calc(50 * var(--u)) calc(50 * var(--u));
+    box-shadow: 0 calc(2 * var(--u)) calc(10 * var(--u)) rgba(0, 0, 0, 0.25);
+    font-size: calc(24 * var(--u));
+    line-height: normal;
+    color: #000;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  // Same frame shape no matter the source image dimensions
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    user-select: none;
+    pointer-events: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bg__img, .slide { transition: none; }
+}
