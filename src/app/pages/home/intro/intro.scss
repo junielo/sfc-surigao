@@ -1,0 +1,79 @@
+// Photos: hidden at their tilted resting position until they reach the center of the screen.
+// --tilt     = resting angle
+// --fan-x    = horizontal shift when fanned out on hover
+// --fan-tilt = angle when fanned out on hover
+.roll-in-blurred-left {
+  opacity: 0;
+  transform: rotate(var(--tilt, 0deg));
+  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+// `.in-view` is added by intro.ts when the photos cross the screen center.
+// Note: fill-mode is `backwards` (not `both`) so the animation does NOT keep
+// controlling `transform` after it ends, which lets the hover fan-out work.
+.in-view .roll-in-blurred-left {
+  opacity: 1;
+  animation: roll-in-blurred-left 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) backwards;
+  animation-delay: var(--delay, 0s);
+}
+
+// Fan out on hover, return to the original tilt when the cursor leaves.
+// Only on devices that really hover (avoids "stuck" fan on touch screens).
+@media (hover: hover) {
+  .photos-stack.in-view:hover .roll-in-blurred-left {
+    transform: translateX(var(--fan-x, 0px)) rotate(var(--fan-tilt, var(--tilt, 0deg)));
+  }
+}
+
+// Text card: hidden until the photos reach the center of the screen, then fades in
+.fade-in-card {
+  opacity: 0;
+}
+
+.fade-in-card.in-view {
+  animation: fade-in 0.8s ease-out both;
+  animation-delay: 0.75s; // starts while the photos are still settling
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* ----------------------------------------------
+ * Based on Animista roll-in-blurred-left
+ * Licensed under FreeBSD License.
+ * See http://animista.net/license for more info.
+ * w: http://animista.net, t: @cssanimista
+ * Modified so it ends at each image's own tilt (--tilt)
+ * ---------------------------------------------- */
+@keyframes roll-in-blurred-left {
+  0% {
+    transform: translateX(-1000px) rotate(calc(var(--tilt, 0deg) - 720deg));
+    filter: blur(50px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0) rotate(var(--tilt, 0deg));
+    filter: blur(0);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .roll-in-blurred-left,
+  .in-view .roll-in-blurred-left,
+  .fade-in-card,
+  .fade-in-card.in-view {
+    animation: none;
+    opacity: 1;
+  }
+
+  .roll-in-blurred-left {
+    transition: none;
+  }
+}

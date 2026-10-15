@@ -1,14 +1,14 @@
-<section class="px-6 pb-16 pt-4">
+<section class="overflow-x-clip px-6 pb-16 pt-4">
   <div class="mx-auto flex max-w-4xl flex-col items-center gap-6 md:flex-row">
-    <div class="relative z-10 h-72 w-56 shrink-0 md:-mr-14">
+    <div #photos [class.in-view]="inView()" class="photos-stack relative z-10 h-72 w-56 shrink-0 md:-mr-14">
       <img src="/images/home/intro/img3.jpg" alt="" width="160" height="213" loading="lazy"
-           class="absolute left-16 top-10 z-10 w-40 aspect-[3/4] rotate-[14deg] rounded-2xl object-cover shadow-[0_6px_14px_-2px_rgba(0,0,0,0.5)]" />
+           class="roll-in-blurred-left [--tilt:14deg] [--fan-x:64px] [--fan-tilt:24deg] [--delay:0.5s] absolute left-16 top-10 z-10 w-40 aspect-[3/4] rounded-2xl object-cover shadow-[0_6px_14px_-2px_rgba(0,0,0,0.5)]" />
       <img src="/images/home/intro/img2.jpg" alt="" width="160" height="213" loading="lazy"
-           class="absolute left-10 top-5 z-20 w-40 aspect-[3/4] rotate-[8deg] rounded-2xl object-cover shadow-[0_6px_14px_-2px_rgba(0,0,0,0.5)]" />
+           class="roll-in-blurred-left [--tilt:8deg] [--fan-x:28px] [--fan-tilt:12deg] [--delay:0.25s] absolute left-10 top-5 z-20 w-40 aspect-[3/4] rounded-2xl object-cover shadow-[0_6px_14px_-2px_rgba(0,0,0,0.5)]" />
       <img src="/images/home/intro/img1.jpg" alt="SFC members at a gathering" width="160" height="213" loading="lazy"
-           class="absolute left-0 top-0 z-30 w-40 aspect-[3/4] -rotate-6 rounded-2xl object-cover shadow-[0_6px_14px_-2px_rgba(0,0,0,0.5)]" />
+           class="roll-in-blurred-left [--tilt:-6deg] [--fan-x:-16px] [--fan-tilt:-14deg] [--delay:0s] absolute left-0 top-0 z-30 w-40 aspect-[3/4] rounded-2xl object-cover shadow-[0_6px_14px_-2px_rgba(0,0,0,0.5)]" />
     </div>
-    <div class="relative flex min-h-[17rem] flex-1 items-center justify-center overflow-hidden rounded-[2rem] bg-white px-8 py-10 shadow-[0_0_24px_rgba(250,204,21,0.25)]">
+    <div [class.in-view]="inView()" class="fade-in-card relative flex min-h-[17rem] flex-1 items-center justify-center overflow-hidden rounded-[2rem] bg-white px-8 py-10 shadow-[0_0_24px_rgba(250,204,21,0.25)]">
       <img src="/images/home/intro/Cathedral.png" alt="" aria-hidden="true"
            class="pointer-events-none absolute bottom-0 left-0 h-full w-auto object-contain object-left-bottom opacity-10" />
       <p class="relative z-10 max-w-lg text-center text-xl text-navy font-[family-name:var(--font-nav)]">
