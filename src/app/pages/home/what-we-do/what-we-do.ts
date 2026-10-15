@@ -1,4 +1,4 @@
-import { Component, ElementRef, viewChild, signal, inject, PLATFORM_ID, afterNextRender, effect } from '@angular/core';
+import { Component, DestroyRef, ElementRef, viewChild, signal, inject, PLATFORM_ID, afterNextRender, effect } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 
 @Component({
@@ -21,6 +21,72 @@ export class WhatWeDo {
   isAssemblyTitleAnimated = signal(false);
   isEventsTitleAnimated = signal(false);
   platformId = inject(PLATFORM_ID);
+  private host = inject<ElementRef<HTMLElement>>(ElementRef);
+  private destroyRef = inject(DestroyRef);
+
+  private initParallax() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
+
+    const tiles = Array.from(this.host.nativeElement.querySelectorAll<HTMLElement>('.tile'));
+    if (!tiles.length) {
+      return;
+    }
+
+    // How far (as a fraction of the tile's height) each layer drifts across the viewport.
+    // Layers lag behind the scroll. The text drifts more than the background,
+    // so it lags more (moves slower) and the tile moves slightly faster than the text.
+    const BG_RANGE = 0.08;
+    const CONTENT_RANGE = 0.11;
+    // Extra drift for the icon on top of the text block's, so it lags the most (moves slowest).
+    // Capped in px so it never runs into the title below it.
+    const ICON_RANGE = 0.06;
+    const ICON_MAX_PX = 30;
+    let ticking = false;
+
+    const update = () => {
+      ticking = false;
+      const vh = window.innerHeight;
+
+      // read pass
+      const measures = tiles.map(tile => {
+        const rect = tile.getBoundingClientRect();
+        const content = tile.querySelector<HTMLElement>('.tile-content');
+        const spare = content ? Math.max(0, (rect.height - content.offsetHeight) / 2) : 0;
+        return { rect, spare };
+      });
+
+      // write pass
+      tiles.forEach((tile, i) => {
+        const { rect, spare } = measures[i];
+        const range = vh / 2 + rect.height / 2;
+        const p = Math.max(-1, Math.min(1, (rect.top + rect.height / 2 - vh / 2) / range));
+        // keep the text from being pushed outside the tile on small screens
+        const contentMax = Math.min(rect.height * CONTENT_RANGE, spare);
+        tile.style.setProperty('--bg-y', `${-p * rect.height * BG_RANGE}px`);
+        tile.style.setProperty('--content-y', `${-p * contentMax}px`);
+        const iconMax = Math.min(rect.height * ICON_RANGE, ICON_MAX_PX);
+        tile.style.setProperty('--icon-y', `${-p * iconMax}px`);
+      });
+    };
+
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    this.destroyRef.onDestroy(() => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    });
+
+    update();
+  }
 
   isTileAnimated(icon: string): boolean {
     return (
@@ -173,6 +239,10 @@ export class WhatWeDo {
       }
       return undefined;
     });
+
+    if (isPlatformBrowser(this.platformId)) {
+      afterNextRender(() => this.initParallax());
+    }
 
     if (isPlatformBrowser(this.platformId)) {
       afterNextRender(() => {

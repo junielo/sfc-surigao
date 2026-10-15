@@ -58,7 +58,9 @@
       display: block;
       object-fit: cover;
       filter: blur(0);
-      transform: scale(1.15);
+      // scale leaves spare image around the edges so the parallax shift never shows a gap
+      transform: translateY(var(--bg-y, 0px)) scale(1.2);
+      will-change: transform;
       // blur starts after the tint has finished fading in (0.6s)
       transition: filter 0.8s ease-out 0.6s;
     }
@@ -95,6 +97,8 @@
     padding: 1.5rem;
     max-width: 600px;
     color: #ffffff;
+    transform: translateY(var(--content-y, 0px));
+    will-change: transform;
 
     .icon-wrapper {
       width: clamp(77px, 8.8vw, 121px);
@@ -104,6 +108,9 @@
       align-items: center;
       justify-content: center;
       filter: drop-shadow(0 0 18px var(--shadow-color));
+      // parallax shift; applied here (not on the img) so it doesn't clash with the swing-in animation
+      transform: translateY(var(--icon-y, 0px));
+      will-change: transform;
 
       img {
         width: 100%;
