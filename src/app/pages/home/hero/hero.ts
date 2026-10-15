@@ -17,7 +17,7 @@ import { isPlatformBrowser } from '@angular/common';
   templateUrl: './hero.html',
 })
 export class Hero implements AfterViewInit, OnDestroy {
-  heroSrc = '/images/home/img_hero.png';
+  heroSrc = 'images/home/img_hero.png';
 
   @ViewChild('heroWrap', { static: true }) heroWrap!: ElementRef<HTMLElement>;
   @ViewChild('heroImg', { static: true }) heroImg!: ElementRef<HTMLImageElement>;

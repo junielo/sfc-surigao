@@ -17,17 +17,17 @@ interface MarqueeRow {
 })
 export class ClpPhotoWall implements OnInit {
   private readonly photos: string[] = [
-    '/images/home/photo-wall/gallery/img1.png',
-    '/images/home/photo-wall/gallery/img2.png',
-    '/images/home/photo-wall/gallery/img3.png',
-    '/images/home/photo-wall/gallery/img4.png',
-    '/images/home/photo-wall/gallery/img5.png',
-    '/images/home/photo-wall/gallery/img6.png',
-    '/images/home/photo-wall/gallery/img7.png',
-    '/images/home/photo-wall/gallery/img8.png',
-    '/images/home/photo-wall/gallery/img9.png',
-    '/images/home/photo-wall/gallery/img10.png',
-    '/images/home/photo-wall/gallery/img11.png',
+    'images/home/photo-wall/gallery/img1.png',
+    'images/home/photo-wall/gallery/img2.png',
+    'images/home/photo-wall/gallery/img3.png',
+    'images/home/photo-wall/gallery/img4.png',
+    'images/home/photo-wall/gallery/img5.png',
+    'images/home/photo-wall/gallery/img6.png',
+    'images/home/photo-wall/gallery/img7.png',
+    'images/home/photo-wall/gallery/img8.png',
+    'images/home/photo-wall/gallery/img9.png',
+    'images/home/photo-wall/gallery/img10.png',
+    'images/home/photo-wall/gallery/img11.png',
   ];
 
   /**
