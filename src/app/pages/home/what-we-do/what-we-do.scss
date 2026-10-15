@@ -115,6 +115,15 @@
       color: #ffffff;
       white-space: nowrap;
 
+      &:not(.tracking-in-expand) {
+        opacity: 0;
+      }
+
+      &.tracking-in-expand {
+        -webkit-animation: tracking-in-expand 0.7s cubic-bezier(0.215, 0.610, 0.355, 1.000) both;
+                animation: tracking-in-expand 0.7s cubic-bezier(0.215, 0.610, 0.355, 1.000) both;
+      }
+
       @media (max-width: 1024px) {
         white-space: normal;
       }
@@ -125,6 +134,14 @@
       height: 1px;
       background-color: rgba(255, 255, 255, 0.6);
       margin-bottom: 0.75rem;
+      transform: scaleX(0);
+      transform-origin: center;
+
+      // starts once the title's 0.7s animation has finished
+      &.line-grow {
+        -webkit-animation: line-grow 0.6s cubic-bezier(0.215, 0.610, 0.355, 1.000) 0.7s both;
+                animation: line-grow 0.6s cubic-bezier(0.215, 0.610, 0.355, 1.000) 0.7s both;
+      }
     }
 
     .tile-description {
@@ -134,6 +151,16 @@
       margin: 0;
       max-width: 500px;
       color: #ffffff;
+
+      &:not(.slide-in-blurred-bottom) {
+        opacity: 0;
+      }
+
+      // starts once the line's animation has finished (0.7s title + 0.6s line)
+      &.slide-in-blurred-bottom {
+        -webkit-animation: slide-in-blurred-bottom 0.6s cubic-bezier(0.230, 1.000, 0.320, 1.000) 1.3s both;
+                animation: slide-in-blurred-bottom 0.6s cubic-bezier(0.230, 1.000, 0.320, 1.000) 1.3s both;
+      }
     }
   }
 }
@@ -188,9 +215,104 @@
   }
 }
 
+@-webkit-keyframes tracking-in-expand {
+  0% {
+    letter-spacing: -0.5em;
+    opacity: 0;
+  }
+  40% {
+    opacity: 0.6;
+  }
+  100% {
+    letter-spacing: 0;
+    opacity: 1;
+  }
+}
+@keyframes tracking-in-expand {
+  0% {
+    letter-spacing: -0.5em;
+    opacity: 0;
+  }
+  40% {
+    opacity: 0.6;
+  }
+  100% {
+    letter-spacing: 0;
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes line-grow {
+  0% {
+    transform: scaleX(0);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
+@keyframes line-grow {
+  0% {
+    transform: scaleX(0);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+@-webkit-keyframes slide-in-blurred-bottom {
+  0% {
+    -webkit-transform: translateY(1000px) scaleY(2.5) scaleX(0.2);
+            transform: translateY(1000px) scaleY(2.5) scaleX(0.2);
+    -webkit-transform-origin: 50% 100%;
+            transform-origin: 50% 100%;
+    -webkit-filter: blur(40px);
+            filter: blur(40px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateY(0) scaleY(1) scaleX(1);
+            transform: translateY(0) scaleY(1) scaleX(1);
+    -webkit-transform-origin: 50% 50%;
+            transform-origin: 50% 50%;
+    -webkit-filter: blur(0);
+            filter: blur(0);
+    opacity: 1;
+  }
+}
+@keyframes slide-in-blurred-bottom {
+  0% {
+    -webkit-transform: translateY(1000px) scaleY(2.5) scaleX(0.2);
+            transform: translateY(1000px) scaleY(2.5) scaleX(0.2);
+    -webkit-transform-origin: 50% 100%;
+            transform-origin: 50% 100%;
+    -webkit-filter: blur(40px);
+            filter: blur(40px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateY(0) scaleY(1) scaleX(1);
+            transform: translateY(0) scaleY(1) scaleX(1);
+    -webkit-transform-origin: 50% 50%;
+            transform-origin: 50% 50%;
+    -webkit-filter: blur(0);
+            filter: blur(0);
+    opacity: 1;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .center-logo img,
   .icon-wrapper img[src*="_tile.png"] {
+    opacity: 1 !important;
+    animation: none !important;
+  }
+
+  .tile-content .divider {
+    transform: none !important;
+    animation: none !important;
+  }
+
+  .tile-content .tile-description {
     opacity: 1 !important;
     animation: none !important;
   }

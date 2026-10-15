@@ -9,18 +9,21 @@
           @if (tile.icon.includes('clp_tile.png')) {
             <img #clpIcon [src]="tile.icon" [alt]="tile.title + ' Icon'" [class.swing-in-left-bck]="isClpAnimated()" (animationend)="onClpAnimationEnd()" />
           } @else if (tile.icon.includes('household_tile.png')) {
-            <img [src]="tile.icon" [alt]="tile.title + ' Icon'" [class.swing-in-left-bck]="isHouseholdAnimated()" />
+            <img #householdIcon [src]="tile.icon" [alt]="tile.title + ' Icon'" [class.swing-in-left-bck]="isHouseholdAnimated()" (animationend)="onHouseholdAnimationEnd()" />
           } @else if (tile.icon.includes('assembly_tile.png')) {
             <img #assemblyIcon [src]="tile.icon" [alt]="tile.title + ' Icon'" [class.swing-in-left-bck]="isAssemblyAnimated()" (animationend)="onAssemblyAnimationEnd()" />
           } @else if (tile.icon.includes('events_tile.png')) {
-            <img [src]="tile.icon" [alt]="tile.title + ' Icon'" [class.swing-in-left-bck]="isEventsAnimated()" />
+            <img #eventsIcon [src]="tile.icon" [alt]="tile.title + ' Icon'" [class.swing-in-left-bck]="isEventsAnimated()" (animationend)="onEventsAnimationEnd()" />
           } @else {
             <img [src]="tile.icon" [alt]="tile.title + ' Icon'" />
           }
         </div>
-        <h3 class="tile-title">{{ tile.title }}</h3>
-        <div class="divider"></div>
-        <p class="tile-description">{{ tile.description }}</p>
+        <h3 class="tile-title" 
+            [class.tracking-in-expand]="isTitleAnimated(tile.icon)">
+          {{ tile.title }}
+        </h3>
+        <div class="divider" [class.line-grow]="isTitleAnimated(tile.icon)"></div>
+        <p class="tile-description" [class.slide-in-blurred-bottom]="isTitleAnimated(tile.icon)">{{ tile.description }}</p>
       </div>
     </article>
   }

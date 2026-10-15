@@ -25,5 +25,22 @@ describe('WhatWeDo', () => {
     component.isAssemblyAnimated.set(true);
     component.onAssemblyAnimationEnd();
     expect(component.isEventsAnimated()).toBe(true);
+    expect(component.isAssemblyTitleAnimated()).toBe(true);
+  });
+
+  it('should trigger title animations on respective animation end callbacks', () => {
+    component.onClpAnimationEnd();
+    expect(component.isClpTitleAnimated()).toBe(true);
+    expect(component.isHouseholdAnimated()).toBe(true);
+
+    component.onHouseholdAnimationEnd();
+    expect(component.isHouseholdTitleAnimated()).toBe(true);
+
+    component.onAssemblyAnimationEnd();
+    expect(component.isAssemblyTitleAnimated()).toBe(true);
+    expect(component.isEventsAnimated()).toBe(true);
+
+    component.onEventsAnimationEnd();
+    expect(component.isEventsTitleAnimated()).toBe(true);
   });
 });

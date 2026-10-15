@@ -16,18 +16,41 @@ export class WhatWeDo {
   isHouseholdAnimated = signal(false);
   isAssemblyAnimated = signal(false);
   isEventsAnimated = signal(false);
+  isClpTitleAnimated = signal(false);
+  isHouseholdTitleAnimated = signal(false);
+  isAssemblyTitleAnimated = signal(false);
+  isEventsTitleAnimated = signal(false);
   platformId = inject(PLATFORM_ID);
 
+  isTitleAnimated(icon: string): boolean {
+    return (
+      (icon.includes('clp_tile.png') && this.isClpTitleAnimated()) ||
+      (icon.includes('household_tile.png') && this.isHouseholdTitleAnimated()) ||
+      (icon.includes('assembly_tile.png') && this.isAssemblyTitleAnimated()) ||
+      (icon.includes('events_tile.png') && this.isEventsTitleAnimated())
+    );
+  }
+
   onClpAnimationEnd() {
+    this.isClpTitleAnimated.set(true);
     if (!this.isHouseholdAnimated()) {
       this.isHouseholdAnimated.set(true);
     }
   }
 
+  onHouseholdAnimationEnd() {
+    this.isHouseholdTitleAnimated.set(true);
+  }
+
   onAssemblyAnimationEnd() {
+    this.isAssemblyTitleAnimated.set(true);
     if (!this.isEventsAnimated()) {
       this.isEventsAnimated.set(true);
     }
+  }
+
+  onEventsAnimationEnd() {
+    this.isEventsTitleAnimated.set(true);
   }
 
   tiles = [
@@ -71,10 +94,58 @@ export class WhatWeDo {
 
   constructor() {
     effect(() => {
+      if (this.isClpAnimated() && !this.isClpTitleAnimated()) {
+        const timer = setTimeout(() => {
+          if (!this.isClpTitleAnimated()) {
+            this.isClpTitleAnimated.set(true);
+          }
+        }, 800);
+        return () => clearTimeout(timer);
+      }
+      return undefined;
+    });
+
+    effect(() => {
+      if (this.isHouseholdAnimated() && !this.isHouseholdTitleAnimated()) {
+        const timer = setTimeout(() => {
+          if (!this.isHouseholdTitleAnimated()) {
+            this.isHouseholdTitleAnimated.set(true);
+          }
+        }, 800);
+        return () => clearTimeout(timer);
+      }
+      return undefined;
+    });
+
+    effect(() => {
       if (this.isClpAnimated() && !this.isHouseholdAnimated()) {
         const timer = setTimeout(() => {
           if (!this.isHouseholdAnimated()) {
             this.isHouseholdAnimated.set(true);
+          }
+        }, 800);
+        return () => clearTimeout(timer);
+      }
+      return undefined;
+    });
+
+    effect(() => {
+      if (this.isAssemblyAnimated() && !this.isAssemblyTitleAnimated()) {
+        const timer = setTimeout(() => {
+          if (!this.isAssemblyTitleAnimated()) {
+            this.isAssemblyTitleAnimated.set(true);
+          }
+        }, 800);
+        return () => clearTimeout(timer);
+      }
+      return undefined;
+    });
+
+    effect(() => {
+      if (this.isEventsAnimated() && !this.isEventsTitleAnimated()) {
+        const timer = setTimeout(() => {
+          if (!this.isEventsTitleAnimated()) {
+            this.isEventsTitleAnimated.set(true);
           }
         }, 800);
         return () => clearTimeout(timer);
@@ -103,6 +174,10 @@ export class WhatWeDo {
           this.isHouseholdAnimated.set(true);
           this.isAssemblyAnimated.set(true);
           this.isEventsAnimated.set(true);
+          this.isClpTitleAnimated.set(true);
+          this.isHouseholdTitleAnimated.set(true);
+          this.isAssemblyTitleAnimated.set(true);
+          this.isEventsTitleAnimated.set(true);
           return;
         }
 
