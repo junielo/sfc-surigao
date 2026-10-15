@@ -1,8 +1,10 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   ElementRef,
   computed,
+  inject,
   signal,
   viewChild,
 } from '@angular/core';
@@ -23,8 +25,11 @@ export interface ActivityItem {
   styleUrl: './events-carousel.scss',
   templateUrl: './events-carousel.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { '(window:resize)': 'updateBackground()' },
 })
-export class EventsCarousel {
+export class EventsCarousel implements AfterViewInit {
+  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
+
   // TODO: replace with your real data / service
   readonly activities = signal<ActivityItem[]>([
     { id: 1, title: 'Church Anniversary', startDate: '2026-10-04', endDate: '2026-11-22', image: 'images/home/events/img_latest.png' },
@@ -48,7 +53,12 @@ export class EventsCarousel {
   private static readonly DURATION_MS = 650;
   private readonly easeFn = EventsCarousel.cubicBezier(0.22, 0.8, 0.26, 1);
 
+  ngAfterViewInit(): void {
+    this.updateBackground();
+  }
+
   onScroll(): void {
+    this.updateBackground();
     if (this.programmatic) return;
     cancelAnimationFrame(this.rafId);
     this.rafId = requestAnimationFrame(() => this.updateActive());
@@ -85,6 +95,7 @@ export class EventsCarousel {
     const step = (now: number) => {
       const p = duration === 0 ? 1 : Math.min(1, (now - t0) / duration);
       trackEl.scrollLeft = start + (target - start) * this.easeFn(p);
+      this.updateBackground();
       if (p < 1) {
         this.animId = requestAnimationFrame(step);
       } else {
@@ -92,6 +103,33 @@ export class EventsCarousel {
       }
     };
     this.animId = requestAnimationFrame(step);
+  }
+
+  /**
+   * Background layers travel horizontally exactly like the slides do (1:1 with
+   * the track's scroll position) and cross-fade by distance from the center,
+   * so they follow the slider's direction on every frame. They are never scaled
+   * by the transition; the enlargement is a fixed scale in the SCSS.
+   * Written straight to the DOM (no change detection) because it runs every frame.
+   */
+  updateBackground(): void {
+    const trackEl = this.track().nativeElement;
+    const slides = this.slideElements();
+    const layers = this.host.nativeElement.querySelectorAll<HTMLElement>('.bg__img');
+    if (!slides.length) return;
+
+    const viewCenter = trackEl.scrollLeft + trackEl.clientWidth / 2;
+    const pitch = slides.length > 1
+      ? slides[1].offsetLeft - slides[0].offsetLeft
+      : slides[0].offsetWidth;
+
+    slides.forEach((slide, i) => {
+      const layer = layers[i];
+      if (!layer) return;
+      const offset = slide.offsetLeft + slide.offsetWidth / 2 - viewCenter; // same shift the slide has on screen
+      layer.style.transform = `translate3d(${offset}px, 0, 0) scale(1.8)`;
+      layer.style.opacity = String(Math.max(0, 1 - Math.abs(offset) / pitch));
+    });
   }
 
   /** Wheel / touch: let the user take over immediately */

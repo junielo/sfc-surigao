@@ -2,7 +2,7 @@
   <!-- Blurred, enlarged background of the selected activity (cross-fades) -->
   <div class="bg" aria-hidden="true">
     @for (item of activities(); track item.id; let i = $index) {
-      <img class="bg__img" [class.is-active]="i === activeIndex()" [src]="item.image" alt="" />
+      <img class="bg__img" [src]="item.image" alt="" />
     }
   </div>
   <div class="tint" aria-hidden="true"></div>
