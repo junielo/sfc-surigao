@@ -11,7 +11,9 @@
           } @else if (tile.icon.includes('household_tile.png')) {
             <img [src]="tile.icon" [alt]="tile.title + ' Icon'" [class.swing-in-left-bck]="isHouseholdAnimated()" />
           } @else if (tile.icon.includes('assembly_tile.png')) {
-            <img #assemblyIcon [src]="tile.icon" [alt]="tile.title + ' Icon'" [class.swing-in-left-bck]="isAssemblyAnimated()" />
+            <img #assemblyIcon [src]="tile.icon" [alt]="tile.title + ' Icon'" [class.swing-in-left-bck]="isAssemblyAnimated()" (animationend)="onAssemblyAnimationEnd()" />
+          } @else if (tile.icon.includes('events_tile.png')) {
+            <img [src]="tile.icon" [alt]="tile.title + ' Icon'" [class.swing-in-left-bck]="isEventsAnimated()" />
           } @else {
             <img [src]="tile.icon" [alt]="tile.title + ' Icon'" />
           }

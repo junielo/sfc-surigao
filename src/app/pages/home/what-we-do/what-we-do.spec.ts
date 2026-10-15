@@ -19,4 +19,11 @@ describe('WhatWeDo', () => {
     expect(component).toBeTruthy();
     expect(component.tiles.length).toBeGreaterThan(0);
   });
+
+  it('should trigger events tile animation after assembly animation ends', () => {
+    expect(component.isEventsAnimated()).toBe(false);
+    component.isAssemblyAnimated.set(true);
+    component.onAssemblyAnimationEnd();
+    expect(component.isEventsAnimated()).toBe(true);
+  });
 });

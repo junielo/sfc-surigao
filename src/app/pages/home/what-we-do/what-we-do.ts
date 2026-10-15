@@ -15,11 +15,18 @@ export class WhatWeDo {
   isClpAnimated = signal(false);
   isHouseholdAnimated = signal(false);
   isAssemblyAnimated = signal(false);
+  isEventsAnimated = signal(false);
   platformId = inject(PLATFORM_ID);
 
   onClpAnimationEnd() {
     if (!this.isHouseholdAnimated()) {
       this.isHouseholdAnimated.set(true);
+    }
+  }
+
+  onAssemblyAnimationEnd() {
+    if (!this.isEventsAnimated()) {
+      this.isEventsAnimated.set(true);
     }
   }
 
@@ -75,6 +82,18 @@ export class WhatWeDo {
       return undefined;
     });
 
+    effect(() => {
+      if (this.isAssemblyAnimated() && !this.isEventsAnimated()) {
+        const timer = setTimeout(() => {
+          if (!this.isEventsAnimated()) {
+            this.isEventsAnimated.set(true);
+          }
+        }, 800);
+        return () => clearTimeout(timer);
+      }
+      return undefined;
+    });
+
     if (isPlatformBrowser(this.platformId)) {
       afterNextRender(() => {
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -83,6 +102,7 @@ export class WhatWeDo {
           this.isClpAnimated.set(true);
           this.isHouseholdAnimated.set(true);
           this.isAssemblyAnimated.set(true);
+          this.isEventsAnimated.set(true);
           return;
         }
 
