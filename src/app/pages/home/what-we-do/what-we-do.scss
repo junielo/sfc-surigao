@@ -57,8 +57,10 @@
       height: 100%;
       display: block;
       object-fit: cover;
-      filter: blur(7.5px);
+      filter: blur(0);
       transform: scale(1.15);
+      // blur starts after the tint has finished fading in (0.6s)
+      transition: filter 0.8s ease-out 0.6s;
     }
 
     &::after {
@@ -66,8 +68,20 @@
       position: absolute;
       inset: 0;
       background: var(--tint);
-      opacity: var(--tint-opacity, 0.8);
+      opacity: 0;
       pointer-events: none;
+      transition: opacity 0.6s ease-out;
+    }
+
+    // starts when the tile's icon starts animating
+    &.bg-animate {
+      img {
+        filter: blur(7.5px);
+      }
+
+      &::after {
+        opacity: var(--tint-opacity, 0.8);
+      }
     }
   }
 
@@ -315,5 +329,10 @@
   .tile-content .tile-description {
     opacity: 1 !important;
     animation: none !important;
+  }
+
+  .tile-bg img,
+  .tile-bg::after {
+    transition: none !important;
   }
 }

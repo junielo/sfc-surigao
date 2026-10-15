@@ -22,6 +22,15 @@ export class WhatWeDo {
   isEventsTitleAnimated = signal(false);
   platformId = inject(PLATFORM_ID);
 
+  isTileAnimated(icon: string): boolean {
+    return (
+      (icon.includes('clp_tile.png') && this.isClpAnimated()) ||
+      (icon.includes('household_tile.png') && this.isHouseholdAnimated()) ||
+      (icon.includes('assembly_tile.png') && this.isAssemblyAnimated()) ||
+      (icon.includes('events_tile.png') && this.isEventsAnimated())
+    );
+  }
+
   isTitleAnimated(icon: string): boolean {
     return (
       (icon.includes('clp_tile.png') && this.isClpTitleAnimated()) ||

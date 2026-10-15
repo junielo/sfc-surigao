@@ -1,7 +1,7 @@
 <section class="what-we-do">
   @for (tile of tiles; track tile.title) {
     <article class="tile" [style.--tint]="tile.tint" [style.--tint-opacity]="tile.opacity" [style.--shadow-color]="tile.shadowColor">
-      <div class="tile-bg">
+      <div class="tile-bg" [class.bg-animate]="isTileAnimated(tile.icon)">
         <img [src]="tile.src" [alt]="tile.title" />
       </div>
       <div class="tile-content">
