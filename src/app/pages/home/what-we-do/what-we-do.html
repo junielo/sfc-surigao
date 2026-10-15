@@ -6,7 +6,13 @@
       </div>
       <div class="tile-content">
         <div class="icon-wrapper">
-          <img [src]="tile.icon" [alt]="tile.title + ' Icon'" />
+          @if (tile.icon.includes('clp_tile.png')) {
+            <img #clpIcon [src]="tile.icon" [alt]="tile.title + ' Icon'" [class.swing-in-left-bck]="isClpAnimated()" (animationend)="onClpAnimationEnd()" />
+          } @else if (tile.icon.includes('household_tile.png')) {
+            <img [src]="tile.icon" [alt]="tile.title + ' Icon'" [class.swing-in-left-bck]="isHouseholdAnimated()" />
+          } @else {
+            <img [src]="tile.icon" [alt]="tile.title + ' Icon'" />
+          }
         </div>
         <h3 class="tile-title">{{ tile.title }}</h3>
         <div class="divider"></div>
@@ -15,6 +21,6 @@
     </article>
   }
   <div class="center-logo">
-    <img src="/images/icons/sfc_transparent.png" alt="SFC Logo" />
+    <img #logoRef src="/images/icons/sfc_transparent.png" alt="SFC Logo" [class.slide-in-elliptic-top-fwd]="isAnimated()" />
   </div>
 </section>

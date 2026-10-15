@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, viewChild, signal, inject, PLATFORM_ID, afterNextRender, effect } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   imports: [],
@@ -7,6 +8,19 @@ import { Component } from '@angular/core';
   templateUrl: './what-we-do.html',
 })
 export class WhatWeDo {
+  logoRef = viewChild<ElementRef<HTMLElement>>('logoRef');
+  clpIconRef = viewChild<ElementRef<HTMLElement>>('clpIcon');
+  isAnimated = signal(false);
+  isClpAnimated = signal(false);
+  isHouseholdAnimated = signal(false);
+  platformId = inject(PLATFORM_ID);
+
+  onClpAnimationEnd() {
+    if (!this.isHouseholdAnimated()) {
+      this.isHouseholdAnimated.set(true);
+    }
+  }
+
   tiles = [
     {
       title: 'Christian Life Program',
@@ -45,4 +59,72 @@ export class WhatWeDo {
       shadowColor: '#9A3CE2',
     },
   ];
+
+  constructor() {
+    effect(() => {
+      if (this.isClpAnimated() && !this.isHouseholdAnimated()) {
+        const timer = setTimeout(() => {
+          if (!this.isHouseholdAnimated()) {
+            this.isHouseholdAnimated.set(true);
+          }
+        }, 800);
+        return () => clearTimeout(timer);
+      }
+      return undefined;
+    });
+
+    if (isPlatformBrowser(this.platformId)) {
+      afterNextRender(() => {
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (prefersReducedMotion) {
+          this.isAnimated.set(true);
+          this.isClpAnimated.set(true);
+          this.isHouseholdAnimated.set(true);
+          return;
+        }
+
+        const el = this.logoRef()?.nativeElement;
+        if (el) {
+          const observer = new IntersectionObserver(
+            (entries, obs) => {
+              entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                  this.isAnimated.set(true);
+                  obs.unobserve(entry.target);
+                }
+              });
+            },
+            {
+              root: null,
+              rootMargin: '-30% 0px -30% 0px',
+              threshold: 0.1,
+            }
+          );
+
+          observer.observe(el);
+        }
+
+        const clpEl = this.clpIconRef()?.nativeElement;
+        if (clpEl) {
+          const clpObserver = new IntersectionObserver(
+            (entries, obs) => {
+              entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                  this.isClpAnimated.set(true);
+                  obs.unobserve(entry.target);
+                }
+              });
+            },
+            {
+              root: null,
+              rootMargin: '-30% 0px -50% 0px',
+              threshold: 0.1,
+            }
+          );
+
+          clpObserver.observe(clpEl);
+        }
+      });
+    }
+  }
 }

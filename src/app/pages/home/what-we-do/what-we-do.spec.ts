@@ -12,10 +12,11 @@ describe('WhatWeDo', () => {
 
     fixture = TestBed.createComponent(WhatWeDo);
     component = fixture.componentInstance;
-    await fixture.whenStable();
+    fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+    expect(component.tiles.length).toBeGreaterThan(0);
   });
 });
